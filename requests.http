@@ -1,0 +1,77 @@
+### GET ALL
+GET http://localhost:3000/announcements
+
+###
+
+### SEARCH
+GET http://localhost:3000/announcements?search=asus
+
+###
+
+### SORT + PAGE
+GET http://localhost:3000/announcements?sort=oldest&page=2
+
+###
+
+### GET EXISTING
+GET http://localhost:3000/announcements/1
+
+###
+
+### GET NOT FOUND
+GET http://localhost:3000/announcements/99999
+
+###
+
+### CREATE VALID
+POST http://localhost:3000/announcements
+Content-Type: application/json
+
+{
+  "title": "Продам ноутбук ASUS",
+  "description": "Відмінний стан, 16GB RAM",
+  "price": 18000,
+  "category": "sale",
+  "contactInfo": "0991234567"
+}
+
+###
+
+### CREATE INVALID
+POST http://localhost:3000/announcements
+Content-Type: application/json
+
+{
+  "title": "abc",
+  "price": -10
+}
+
+###
+
+### PATCH
+PATCH http://localhost:3000/announcements/1
+Content-Type: application/json
+
+{
+  "price": 15000
+}
+
+###
+
+### PATCH NOT FOUND
+PATCH http://localhost:3000/announcements/99999
+Content-Type: application/json
+
+{
+  "price": 15000
+}
+
+###
+
+### DELETE
+DELETE http://localhost:3000/announcements/1
+
+###
+
+### DELETE NOT FOUND
+DELETE http://localhost:3000/announcements/99999

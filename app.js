@@ -1,6 +1,7 @@
 import express from 'express'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
+import announcementsRouter from './src/routes/announcements.routes.js'
 import { errors as celebrateErrors } from 'celebrate'
 
 const app = express()
@@ -20,12 +21,14 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: [],
+  apis: ['./src/routes/*.js'],
 }
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions)
 
 app.use(express.json())
+
+app.use('/announcements', announcementsRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
