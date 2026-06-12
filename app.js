@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import announcementsRouter from './src/routes/announcements.routes.js'
 import { errors as celebrateErrors } from 'celebrate'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
@@ -83,3 +84,5 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
   console.log(`API docs: http://localhost:${PORT}/api-docs`)
 })
+
+app.use(cookieParser())

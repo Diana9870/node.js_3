@@ -15,6 +15,8 @@ import {
   idValidator,
 } from '../validators/announcements.validator.js'
 
+import { authenticate } from '../middleware/auth.middleware.js'
+
 const router = Router()
 
 /**
@@ -123,8 +125,9 @@ router.get(
  */
 router.post(
   '/',
+  authenticate,
   createAnnouncementValidator,
-  createAnnouncement,
+  createAnnouncement
 )
 
 /**
@@ -172,6 +175,7 @@ router.post(
  */
 router.patch(
   '/:id',
+  authenticate,
   idValidator,
   updateAnnouncementValidator,
   updateAnnouncement,
@@ -198,6 +202,7 @@ router.patch(
  */
 router.delete(
   '/:id',
+  authenticate,
   idValidator,
   deleteAnnouncement,
 )
