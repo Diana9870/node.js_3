@@ -13,8 +13,7 @@ import {
   loginValidator,
 } from '../validators/auth.validator.js'
 
-import { authenticate }
-from '../middleware/auth.middleware.js'
+import { authenticate } from '../middleware/auth.middleware.js'
 
 
 const router = Router()
