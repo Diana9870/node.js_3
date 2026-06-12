@@ -1,77 +1,186 @@
-### GET ALL
+### AUTH
+
+### Register User 1
+
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+"username": "ivan",
+"password": "123456",
+"name": "Іван"
+}
+
+###
+
+### Register User 2
+
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+"username": "petro",
+"password": "123456",
+"name": "Петро"
+}
+
+###
+
+### Login User 1
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+"username": "ivan",
+"password": "123456"
+}
+
+###
+
+### Login User 2
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+"username": "petro",
+"password": "123456"
+}
+
+###
+
+### Current User
+
+GET http://localhost:3000/auth/me
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Refresh Token
+
+POST http://localhost:3000/auth/refresh
+Content-Type: application/json
+
+{
+"refreshToken": "{{refreshToken}}"
+}
+
+###
+
+### Logout
+
+POST http://localhost:3000/auth/logout
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Invalid Login
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+"username": "ivan",
+"password": "wrong_password"
+}
+
+###
+
+### ANNOUNCEMENTS
+
+### Get All Announcements
+
 GET http://localhost:3000/announcements
 
 ###
 
-### SEARCH
-GET http://localhost:3000/announcements?search=asus
+### Get Announcement By Id
 
-###
-
-### SORT + PAGE
-GET http://localhost:3000/announcements?sort=oldest&page=2
-
-###
-
-### GET EXISTING
 GET http://localhost:3000/announcements/1
 
 ###
 
-### GET NOT FOUND
-GET http://localhost:3000/announcements/99999
+### Create Announcement
 
-###
-
-### CREATE VALID
 POST http://localhost:3000/announcements
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "title": "Продам ноутбук ASUS",
-  "description": "Відмінний стан, 16GB RAM",
-  "price": 18000,
-  "category": "sale",
-  "contactInfo": "0991234567"
+"title": "iPhone 14",
+"description": "Новий смартфон",
+"price": 25000,
+"category": "electronics",
+"contactInfo": "+380991112233"
 }
 
 ###
 
-### CREATE INVALID
-POST http://localhost:3000/announcements
+### Update Own Announcement
+
+PATCH http://localhost:3000/announcements/1
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "title": "abc",
-  "price": -10
+"price": 23000
 }
 
 ###
 
-### PATCH
+### Delete Own Announcement
+
+DELETE http://localhost:3000/announcements/1
+Authorization: Bearer {{accessToken}}
+
+###
+
+### Create Without Token (Expected 401)
+
+POST http://localhost:3000/announcements
+Content-Type: application/json
+
+{
+"title": "Unauthorized",
+"description": "Should fail",
+"price": 100,
+"category": "test",
+"contactInfo": "000000000"
+}
+
+###
+
+### Update Without Token (Expected 401)
+
 PATCH http://localhost:3000/announcements/1
 Content-Type: application/json
 
 {
-  "price": 15000
+"price": 1
 }
 
 ###
 
-### PATCH NOT FOUND
-PATCH http://localhost:3000/announcements/99999
-Content-Type: application/json
+### Delete Without Token (Expected 401)
 
-{
-  "price": 15000
-}
-
-###
-
-### DELETE
 DELETE http://localhost:3000/announcements/1
 
 ###
 
-### DELETE NOT FOUND
-DELETE http://localhost:3000/announcements/99999
+### Ownership Test (Login as User 2 first)
+
+PATCH http://localhost:3000/announcements/1
+Authorization: Bearer {{user2AccessToken}}
+Content-Type: application/json
+
+{
+"price": 999
+}
+
+###
+
+### Ownership Delete Test (Expected 403)
+
+DELETE http://localhost:3000/announcements/1
+Authorization: Bearer {{user2AccessToken}}
