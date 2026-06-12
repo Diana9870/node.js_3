@@ -30,7 +30,7 @@ const router = Router()
  *         name: search
  *         schema:
  *           type: string
- *         description: Search by title
+ *         description: Search announcements by title
  *       - in: query
  *         name: sort
  *         schema:
@@ -84,6 +84,8 @@ router.get(
  *   post:
  *     summary: Create announcement
  *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -101,12 +103,15 @@ router.get(
  *                 type: string
  *                 minLength: 5
  *                 maxLength: 100
+ *                 example: iPhone 15 Pro
  *               description:
  *                 type: string
  *                 minLength: 10
+ *                 example: New phone in perfect condition
  *               price:
  *                 type: number
  *                 minimum: 0.01
+ *                 example: 35000
  *               category:
  *                 type: string
  *                 enum:
@@ -117,17 +122,20 @@ router.get(
  *               contactInfo:
  *                 type: string
  *                 minLength: 5
+ *                 example: +380991112233
  *     responses:
  *       201:
- *         description: Announcement created
+ *         description: Announcement created successfully
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Invalid or expired token
  */
 router.post(
   '/',
   authenticate,
   createAnnouncementValidator,
-  createAnnouncement
+  createAnnouncement,
 )
 
 /**
@@ -136,6 +144,8 @@ router.post(
  *   patch:
  *     summary: Update announcement
  *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -152,10 +162,13 @@ router.post(
  *             properties:
  *               title:
  *                 type: string
+ *                 example: Updated title
  *               description:
  *                 type: string
+ *                 example: Updated description
  *               price:
  *                 type: number
+ *                 example: 5000
  *               category:
  *                 type: string
  *                 enum:
@@ -165,11 +178,16 @@ router.post(
  *                   - other
  *               contactInfo:
  *                 type: string
+ *                 example: +380991112233
  *     responses:
  *       200:
- *         description: Announcement updated
+ *         description: Announcement updated successfully
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Invalid or expired token
+ *       403:
+ *         description: Access denied
  *       404:
  *         description: Announcement not found
  */
@@ -187,6 +205,8 @@ router.patch(
  *   delete:
  *     summary: Delete announcement
  *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -196,7 +216,11 @@ router.patch(
  *         description: Announcement ID
  *     responses:
  *       200:
- *         description: Announcement deleted
+ *         description: Announcement deleted successfully
+ *       401:
+ *         description: Invalid or expired token
+ *       403:
+ *         description: Access denied
  *       404:
  *         description: Announcement not found
  */
